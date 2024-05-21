@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-m64 -Wall
 DFLAGS=-g -O0
-LIBS=-lallegro -lallegro_dialog -lallegro_image 
+LIBS=-lallegro -lallegro_font
 
 
 deb:	main.o juliaSet.o
