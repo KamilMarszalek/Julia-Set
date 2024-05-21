@@ -1,5 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
+#include "juliaSet.h"
 
-int HEIGHT=800;
-int WIDTH=800;
+#define WIDTH 800
+#define HEIGHT 800
+#define MAX_ITER 256
