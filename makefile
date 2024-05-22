@@ -1,16 +1,19 @@
-CC=gcc
-CFLAGS=-m64 -Wall
-DFLAGS=-g -O0
-LIBS=-lallegro -lallegro_font
+CC = gcc
+NASM = nasm
+CFLAGS = `pkg-config --cflags allegro-5 allegro_primitives-5`
+LDFLAGS = `pkg-config --libs allegro-5 allegro_primitives-5`
+ASMFLAGS = -f elf64
 
+all: julia
 
-deb:	main.o juliaSet.o
-		$(CC) $(CFLAGS) $(DFLAGS) main.o juliaSet.o -o debug $(LIBS)
-all:	main.o juliaSet.o
-		$(CC) $(CFLAGS) main.o juliaSet.o -o f
-main.o:	main.c 
-		$(CC) $(CFLAGS) -c main.c -o main.o
-juliaSet.o:	juliaSet.s
-		nasm -f elf64 juliaSet.s
+julia: main.o juliaSet.o
+	$(CC) -o julia main.o juliaSet.o $(LDFLAGS)
+
+main.o: main.c juliaSet.h
+	$(CC) $(CFLAGS) -c main.c -o main.o
+
+juliaSet.o: juliaSet.s
+	$(NASM) $(ASMFLAGS) juliaSet.s -o juliaSet.o
+
 clean:
-		rm -rf *.o juliaSet debug
+	rm -f *.o julia
