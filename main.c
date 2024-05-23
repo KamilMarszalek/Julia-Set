@@ -3,8 +3,6 @@
 #include "juliaSet.h"
 #include "constants.h"
 
-
-
 double max(double a, double b) {
     return a > b ? a : b;
 }
@@ -30,7 +28,7 @@ int main() {
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_timer_event_source(timer));
 
-    bool redraw = true;
+    bool update = true;
     ALLEGRO_EVENT event;
 
     uint8_t *pixels = malloc(WIDTH * HEIGHT * 3);
@@ -42,67 +40,70 @@ int main() {
     double cImag = 0.0;
     double escapeRadius = 2.0;
 
-
-
     juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, scale);
     displayRGBPixels(pixels, WIDTH, HEIGHT);
-
 
     al_start_timer(timer);
     while (true) {
         al_wait_for_event(queue, &event);
-
         if (event.type == ALLEGRO_EVENT_KEY_CHAR) {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 break;
             }
-
             if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
-                cReal -= C_CHANGE;
+                cReal -= SMALL_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
-                cReal += C_CHANGE;
+                cReal += SMALL_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
-                cImag += C_CHANGE;
+                cImag += SMALL_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
-                cImag -= C_CHANGE;
+                cImag -= SMALL_CHANGE;
             }
-
             if (event.keyboard.keycode == ALLEGRO_KEY_W) {
-                offsetImag -= OFFSET_CHANGE;
+                cImag += BIG_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_A) {
-                offsetReal -= OFFSET_CHANGE;
+                cReal -= BIG_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
-                offsetImag += OFFSET_CHANGE;
+                cImag -= BIG_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_D) {
-                offsetReal += OFFSET_CHANGE;
+                cReal += BIG_CHANGE;
             }
-
             if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
                 scale = max(scale - SCALE_CHANGE, 0);
             } else if (event.keyboard.keycode == ALLEGRO_KEY_E) {
                 scale += SCALE_CHANGE;
             }
-
-            redraw = true;
-
+            if (event.keyboard.keycode == ALLEGRO_KEY_R) {
+                cReal = 0.0;
+                cImag = 0.0;
+                scale = 1.0;
+                offsetReal = (double)WIDTH / 2;
+                offsetImag = (double)HEIGHT / 2;
+            }
+            if (event.keyboard.keycode == ALLEGRO_KEY_I) {
+                offsetImag -= OFFSET_CHANGE;
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_J) {
+                offsetReal -= OFFSET_CHANGE;
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_K) {
+                offsetImag += OFFSET_CHANGE;
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_L) {
+                offsetReal += OFFSET_CHANGE;
+            }
+            update = true;
         } else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
             break;
         }
-
-        if (redraw && al_is_event_queue_empty(queue)) {
+        if (update && al_is_event_queue_empty(queue)) {
             juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, scale);
             displayRGBPixels(pixels, WIDTH, HEIGHT);
             al_flip_display();
-
-            redraw = false;
+            update = false;
         }
     }
-
     al_destroy_font(font);
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
-
     free(pixels);
     return 0;
 }
