@@ -9,7 +9,7 @@ all: julia
 julia: main.o juliaSet.o
 	$(CC) -o julia main.o juliaSet.o $(LDFLAGS)
 
-main.o: main.c juliaSet.h
+main.o: main.c juliaSet.h constants.h
 	$(CC) $(CFLAGS) -c main.c -o main.o
 
 juliaSet.o: juliaSet.s

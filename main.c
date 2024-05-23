@@ -1,13 +1,9 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 #include "juliaSet.h"
+#include "constants.h"
 
-#define TIME_STEP 1.0 / 60.0
-const unsigned WIDTH = 800;
-const unsigned HEIGHT =  800;
-const double OFFSET_CHANGE = 10.0;
-const double C_CHANGE = 0.05;
-const double SCALE_CHANGE = 0.05;
+
 
 double max(double a, double b) {
     return a > b ? a : b;
@@ -17,11 +13,7 @@ void displayRGBPixels(uint8_t pixels[], int width, int height) {
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
             int pixelIndex = 3 * (row * width + col);
-            al_draw_pixel(col, row, al_map_rgb(
-                    pixels[pixelIndex],
-                    pixels[pixelIndex + 1],
-                    pixels[pixelIndex + 2]
-            ));
+            al_draw_pixel(col, row, al_map_rgb(pixels[pixelIndex], pixels[pixelIndex + 1],pixels[pixelIndex + 2]));
         }
     }
 }
@@ -46,7 +38,7 @@ int main() {
     double offsetImag = (double)HEIGHT / 2;
     double scale = 1.0;
 
-    double cReal = -0.75;
+    double cReal = 0.0;
     double cImag = 0.0;
     double escapeRadius = 2.0;
 
