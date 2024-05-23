@@ -2,21 +2,25 @@
 #include <allegro5/allegro_font.h>
 #include "juliaSet.h"
 
-int WIDTH = 600;
-int HEIGHT = 512;
+#define TIME_STEP 1.0 / 60.0
+const unsigned WIDTH = 800;
+const unsigned HEIGHT =  800;
+const double OFFSET_CHANGE = 10.0;
+const double C_CHANGE = 0.05;
+const double SCALE_CHANGE = 0.05;
 
 double max(double a, double b) {
-    return (a < b) ? b : a;
+    return a > b ? a : b;
 }
 
-void displayRGBPixels(uint8_t *pixelArray, int width, int height) {
+void displayRGBPixels(uint8_t pixels[], int width, int height) {
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
-            int pixelIdx = 3 * (row * width + col);
+            int pixelIndex = 3 * (row * width + col);
             al_draw_pixel(col, row, al_map_rgb(
-                    pixelArray[pixelIdx],
-                    pixelArray[pixelIdx + 1],
-                    pixelArray[pixelIdx + 2]
+                    pixels[pixelIndex],
+                    pixels[pixelIndex + 1],
+                    pixels[pixelIndex + 2]
             ));
         }
     }
@@ -26,7 +30,7 @@ int main() {
     al_init();
     al_install_keyboard();
 
-    ALLEGRO_TIMER *timer = al_create_timer(1.0 / 30.0);
+    ALLEGRO_TIMER *timer = al_create_timer(TIME_STEP);
     ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
     ALLEGRO_DISPLAY *disp = al_create_display(WIDTH, HEIGHT);
     ALLEGRO_FONT *font = al_create_builtin_font();
@@ -40,17 +44,15 @@ int main() {
     uint8_t *pixels = malloc(WIDTH * HEIGHT * 3);
     double offsetReal = (double)WIDTH / 2;
     double offsetImag = (double)HEIGHT / 2;
-    double zoom = 1.0;
+    double scale = 1.0;
 
-    double cReal = 0.248;
-    double cImag = 0.1;
+    double cReal = -0.75;
+    double cImag = 0.0;
     double escapeRadius = 2.0;
 
-    double deltaOffset = 10.0;
-    double deltaC = 0.05;
-    double deltaZoom = 0.05;
 
-    juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, zoom);
+
+    juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, scale);
     displayRGBPixels(pixels, WIDTH, HEIGHT);
 
 
@@ -64,29 +66,29 @@ int main() {
             }
 
             if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
-                cReal -= deltaC;
+                cReal -= C_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
-                cReal += deltaC;
+                cReal += C_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
-                cImag += deltaC;
+                cImag += C_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
-                cImag -= deltaC;
+                cImag -= C_CHANGE;
             }
 
             if (event.keyboard.keycode == ALLEGRO_KEY_W) {
-                offsetImag -= deltaOffset;
+                offsetImag -= OFFSET_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_A) {
-                offsetReal -= deltaOffset;
+                offsetReal -= OFFSET_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_S) {
-                offsetImag += deltaOffset;
+                offsetImag += OFFSET_CHANGE;
             } else if (event.keyboard.keycode == ALLEGRO_KEY_D) {
-                offsetReal += deltaOffset;
+                offsetReal += OFFSET_CHANGE;
             }
 
             if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
-                zoom = max(zoom - deltaZoom, 0);
+                scale = max(scale - SCALE_CHANGE, 0);
             } else if (event.keyboard.keycode == ALLEGRO_KEY_E) {
-                zoom += deltaZoom;
+                scale += SCALE_CHANGE;
             }
 
             redraw = true;
@@ -96,7 +98,7 @@ int main() {
         }
 
         if (redraw && al_is_event_queue_empty(queue)) {
-            juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, zoom);
+            juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, scale);
             displayRGBPixels(pixels, WIDTH, HEIGHT);
             al_flip_display();
 
