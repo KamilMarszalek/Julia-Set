@@ -3,6 +3,15 @@
 #include "juliaSet.h"
 #include "constants.h"
 
+
+void restart_params(double *cReal, double *cImag, double *scale, double *offsetReal, double *offsetImag) {
+    *cReal = START_C_REAL;
+    *cImag = START_C_IMAG;
+    *scale = START_SCALE;
+    *offsetReal = (double)WIDTH / 2;
+    *offsetImag = (double)HEIGHT / 2;
+}
+
 double max(double a, double b) {
     return a > b ? a : b;
 }
@@ -32,13 +41,9 @@ int main() {
     ALLEGRO_EVENT event;
 
     uint8_t *pixels = malloc(WIDTH * HEIGHT * 3);
-    double offsetReal = (double)WIDTH / 2;
-    double offsetImag = (double)HEIGHT / 2;
-    double scale = 1.0;
-
-    double cReal = 0.0;
-    double cImag = 0.0;
-    double escapeRadius = 2.0;
+    double cReal, cImag, scale, offsetReal, offsetImag;
+    restart_params(&cReal, &cImag, &scale, &offsetReal, &offsetImag);
+    double escapeRadius = ESCAPE_RADIUS;
 
     juliaSet(pixels, WIDTH, HEIGHT, escapeRadius, cReal, cImag, offsetReal, offsetImag, scale);
     displayRGBPixels(pixels, WIDTH, HEIGHT);
@@ -74,11 +79,7 @@ int main() {
                 scale += SCALE_CHANGE;
             }
             if (event.keyboard.keycode == ALLEGRO_KEY_R) {
-                cReal = 0.0;
-                cImag = 0.0;
-                scale = 1.0;
-                offsetReal = (double)WIDTH / 2;
-                offsetImag = (double)HEIGHT / 2;
+                restart_params(&cReal, &cImag, &scale, &offsetReal, &offsetImag);
             }
             if (event.keyboard.keycode == ALLEGRO_KEY_I) {
                 offsetImag -= OFFSET_CHANGE;
@@ -100,6 +101,7 @@ int main() {
             update = false;
         }
     }
+    
     al_destroy_font(font);
     al_destroy_display(disp);
     al_destroy_timer(timer);
