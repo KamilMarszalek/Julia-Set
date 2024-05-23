@@ -93,28 +93,27 @@ pixelLoop:
     jmp pixelLoop
 endPixelLoop:
    	; rcx = uint8_t r = ((maxIteration - iteration) * 255) / maxIteration;
-	mov		rcx, 128		; rcx = maxIteration
-	sub		rcx, rax		; rcx = maxIteration - iteration
-	imul	rcx, 255		; rcx = (maxIteration - iteration) * 255
-	sar		rcx, 7			; rcx = (maxIteration - iteration) * 255 / maxIteration (maxIteration == 128 == 2^7)
+	mov	rcx, 128		; rcx = maxIteration
+	sub	rcx, rax		; rcx = maxIteration - iteration
+	imul rcx, 255		; rcx = (maxIteration - iteration) * 255
+	sar	rcx, 7			; rcx = (maxIteration - iteration) * 255 / maxIteration (maxIteration == 128 == 2^7)
 
 	; rbx = pixelIdx = 3 * (row * width + col)
-	mov		rbx, r8			; rbx = row
-	imul	rbx, rsi		; rbx = row * width
-	add		rbx, r9			; rbx = row * width + col
-	mov		r12, rbx		; r12 = 1 * (row * width + col)
-	shl		rbx, 1			; rbx = 2 * (row * width + col)
-	add		rbx, r12		; rbx = 3 * (row * width + col)
+	mov	rbx, r8			; rbx = row
+	imul rbx, rsi		; rbx = row * width
+	add	rbx, r9			; rbx = row * width + col
+	mov	r12, rbx		; r12 = 1 * (row * width + col)
+	shl	rbx, 1			; rbx = 2 * (row * width + col)
+	add	rbx, r12		; rbx = 3 * (row * width + col)
 
-	mov 	[rdi + rbx], cl				; *(pixels + pixelIdx) = r
-	mov		byte [rdi + rbx + 1], cl		; *(pixels + pixelIdx + 1) = 0
-	mov		byte [rdi + rbx + 2], 0		; *(pixels + pixelIdx + 2) = 0
+	mov [rdi + rbx], cl				; *(pixels + pixelIdx) = r
+	mov	byte [rdi + rbx + 1], cl		; *(pixels + pixelIdx + 1) = 0
+	mov	byte [rdi + rbx + 2], 0		; *(pixels + pixelIdx + 2) = 0
 
     ; decrement col
     dec r9
     jnz innerLoop
 endInnerLoop:
-
     ; decrement row
     dec r8
     jnz outerLoop
