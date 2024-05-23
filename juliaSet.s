@@ -47,10 +47,10 @@ innerLoop:
     divsd xmm7, xmm8 ; xmm8 = 2 * (row - offsetY) * escapeRadius / (height * scale)
 
     ; set iter counter
-    mov rax, 0
+    mov rcx, 128
 pixelLoop:
     ; check if iter counter is zero
-    cmp rax, 128
+    cmp rcx, 0
     je endPixelLoop
 
     ; calc zReal^2
@@ -89,12 +89,10 @@ pixelLoop:
     addsd xmm6, xmm1 ; xmm11 = zReal^2 - zImag^2 + cReal
 
     ; decrement iter counter
-    inc rax
+    dec rcx
     jmp pixelLoop
 endPixelLoop:
    	; rcx = uint8_t r = ((maxIteration - iteration) * 255) / maxIteration;
-	mov	rcx, 128		; rcx = maxIteration
-	sub	rcx, rax		; rcx = maxIteration - iteration
 	imul rcx, 255		; rcx = (maxIteration - iteration) * 255
 	sar	rcx, 7			; rcx = (maxIteration - iteration) * 255 / maxIteration (maxIteration == 128 == 2^7)
 
