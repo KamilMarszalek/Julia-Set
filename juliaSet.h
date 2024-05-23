@@ -1,7 +1,7 @@
 #ifndef JULIA_SET_H
 #define JULIA_SET_H
     void juliaSet(
-        unsigned* pixels, 
+        uint8_t* pixels, 
         int width,
         int height,
         double escapeRadius,

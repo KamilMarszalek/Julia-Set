@@ -1,7 +1,7 @@
 CC = gcc
 NASM = nasm
-CFLAGS = `pkg-config --cflags allegro-5 allegro_primitives-5`
-LDFLAGS = `pkg-config --libs allegro-5 allegro_primitives-5`
+CFLAGS = `pkg-config --cflags allegro-5 allegro_font-5`
+LDFLAGS = `pkg-config --libs allegro-5 allegro_font-5`
 ASMFLAGS = -f elf64
 
 all: julia
