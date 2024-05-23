@@ -9,43 +9,6 @@ double max(double a, double b) {
     return (a < b) ? b : a;
 }
 
-void juliaSetC(uint8_t *pixels, int width, int height, double escapeRadius, double cReal, double cImag, double centerReal, double centerImag, double zoom) {
-    for (int row = height-1; row >= 0; row--) {
-        for (int col = width-1; col >= 0; col--) {
-            double zReal = (col - centerReal) * escapeRadius * 2 / (width * zoom);
-            double zImag = (row - centerImag) * escapeRadius * 2 / (height * zoom);
-
-            int iteration = 0;
-            int maxIteration = 100;
-
-            while (zReal * zReal + zImag * zImag < escapeRadius * escapeRadius && iteration < maxIteration) {
-                double tmpReal = zReal * zReal - zImag * zImag;
-                zImag = 2 * zReal * zImag + cImag;
-                zReal = tmpReal + cReal;
-
-                iteration++;
-            }
-
-            uint8_t r, g, b;
-            r = ((maxIteration - iteration) * 255) / maxIteration;
-            g = 0;
-            b = 0;
-
-            int pixelIdx = 3 * (row * width + col);
-            *(pixels + pixelIdx) = r;
-            *(pixels + pixelIdx + 1) = g;
-            *(pixels + pixelIdx + 2) = b;
-
-        }
-    }
-}
-
-/**
- * Display 24-bit RGB pixels stored in an array on the currently active bitmap
- * @param pixelArray - array of RGB pixel values
- * @param width - width of the pixel array
- * @param height - height of the pixel array
- */
 void displayRGBPixels(uint8_t *pixelArray, int width, int height) {
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
