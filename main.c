@@ -73,9 +73,9 @@ int main() {
             } else if (event.keyboard.keycode == ALLEGRO_KEY_D) {
                 cReal += BIG_CHANGE;
             }
-            if (event.keyboard.keycode == ALLEGRO_KEY_Q) {
+            if (event.keyboard.keycode == ALLEGRO_KEY_MINUS) {
                 scale = max(scale - SCALE_CHANGE, 0);
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_E) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_EQUALS) {
                 scale += SCALE_CHANGE;
             }
             if (event.keyboard.keycode == ALLEGRO_KEY_R) {
