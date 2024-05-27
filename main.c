@@ -12,10 +12,6 @@ void restart_params(double *cReal, double *cImag, double *scale, double *offsetR
     *offsetImag = (double)HEIGHT / 2;
 }
 
-double max(double a, double b) {
-    return a > b ? a : b;
-}
-
 void displayRGBPixels(uint8_t pixels[], int width, int height) {
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
@@ -23,6 +19,10 @@ void displayRGBPixels(uint8_t pixels[], int width, int height) {
             al_draw_pixel(col, row, al_map_rgb(pixels[pixelIndex], pixels[pixelIndex + 1],pixels[pixelIndex + 2]));
         }
     }
+}
+
+double max(double a, double b) {
+    return a > b ? a : b;
 }
 
 int main() {

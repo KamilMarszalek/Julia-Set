@@ -44,7 +44,7 @@ innerLoop:
     mulsd xmm8, xmm5 ; xmm8 = height * scale
     divsd xmm7, xmm8 ; xmm7 = 2 * (row - offsetY) * escapeRadius / (height * scale)
 
-    ; set iter counter
+    ; set iter counter MAX_ITER = 128
     mov rcx, 128
 pixelLoop:
     ; check if iter counter is zero
