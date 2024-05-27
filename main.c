@@ -1,7 +1,7 @@
+#include <stdio.h>
 #include <allegro5/allegro5.h>
 #include "juliaSet.h"
 #include "constants.h"
-#include <stdio.h>
 
 
 void restart_params(double *cReal, double *cImag, double *scale, double *offsetReal, double *offsetImag) {

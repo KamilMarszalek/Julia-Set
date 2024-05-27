@@ -1,6 +1,6 @@
 #define TIME_STEP 1.0 / 60.0
-const unsigned WIDTH = 1000;
-const unsigned HEIGHT = 1000;
+const unsigned WIDTH = 800;
+const unsigned HEIGHT = 800;
 const double START_C_REAL = -0.75;
 const double START_C_IMAG = 0.0;
 const double START_SCALE = 1.0;
