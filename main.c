@@ -55,13 +55,13 @@ int main() {
             if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
                 break;
             }
-            if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
+            if (event.keyboard.keycode == ALLEGRO_KEY_J) {
                 cReal -= SMALL_CHANGE;
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_L) {
                 cReal += SMALL_CHANGE;
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_I) {
                 cImag += SMALL_CHANGE;
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_K) {
                 cImag -= SMALL_CHANGE;
             }
             if (event.keyboard.keycode == ALLEGRO_KEY_W) {
@@ -81,13 +81,13 @@ int main() {
             if (event.keyboard.keycode == ALLEGRO_KEY_R) {
                 restart_params(&cReal, &cImag, &scale, &offsetReal, &offsetImag);
             }
-            if (event.keyboard.keycode == ALLEGRO_KEY_I) {
+            if (event.keyboard.keycode == ALLEGRO_KEY_UP) {
                 offsetImag -= OFFSET_CHANGE;
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_J) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_LEFT) {
                 offsetReal -= OFFSET_CHANGE;
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_K) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_DOWN) {
                 offsetImag += OFFSET_CHANGE;
-            } else if (event.keyboard.keycode == ALLEGRO_KEY_L) {
+            } else if (event.keyboard.keycode == ALLEGRO_KEY_RIGHT) {
                 offsetReal += OFFSET_CHANGE;
             }
             update = true;
