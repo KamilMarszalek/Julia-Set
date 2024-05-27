@@ -1,7 +1,7 @@
 #include <allegro5/allegro5.h>
-#include <allegro5/allegro_font.h>
 #include "juliaSet.h"
 #include "constants.h"
+#include <stdio.h>
 
 
 void restart_params(double *cReal, double *cImag, double *scale, double *offsetReal, double *offsetImag) {
@@ -26,13 +26,30 @@ void displayRGBPixels(uint8_t pixels[], int width, int height) {
 }
 
 int main() {
-    al_init();
-    al_install_keyboard();
+    if(!al_init()){
+        printf("Failed to initialize allegro!\n");
+        return -1;
+    }
+    if(!al_install_keyboard()){
+        printf("Failed to initialize the keyboard!\n");
+        return -1;
+    }
 
     ALLEGRO_TIMER *timer = al_create_timer(TIME_STEP);
+    if(!timer){
+        printf("Failed to create timer!\n");
+        return -1;
+    }
     ALLEGRO_EVENT_QUEUE *queue = al_create_event_queue();
+    if(!queue){
+        printf("Failed to create event queue!\n");
+        return -1;
+    }
     ALLEGRO_DISPLAY *disp = al_create_display(WIDTH, HEIGHT);
-    ALLEGRO_FONT *font = al_create_builtin_font();
+    if(!disp){
+        printf("Failed to create display!\n");
+        return -1;
+    }
 
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_timer_event_source(timer));
@@ -101,8 +118,6 @@ int main() {
             update = false;
         }
     }
-    
-    al_destroy_font(font);
     al_destroy_display(disp);
     al_destroy_timer(timer);
     al_destroy_event_queue(queue);
