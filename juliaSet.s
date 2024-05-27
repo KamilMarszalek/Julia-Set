@@ -44,7 +44,7 @@ innerLoop:
     mulsd xmm8, xmm5 ; xmm8 = height * scale
     divsd xmm7, xmm8 ; xmm7 = 2 * (row - offsetY) * escapeRadius / (height * scale)
 
-    ; set iter counter MAX_ITER = 128
+    ; set iter counter maxIteration = 128
     mov rcx, 128
 pixelLoop:
     ; check if iter counter is zero
@@ -71,11 +71,11 @@ pixelLoop:
     jae endPixelLoop
 
     ; xmm8 = zReal^2 - zImag^2
-    movsd xmm8, xmm6 ; xmm7 = zReal
-    mulsd xmm8, xmm8 ; xmm7 = zReal^2
+    movsd xmm8, xmm6 ; xmm8 = zReal
+    mulsd xmm8, xmm8 ; xmm8 = zReal^2
     movsd xmm9, xmm7 ; xmm9 = zImag
     mulsd xmm9, xmm9 ; xmm9 = zImag^2
-    subsd xmm8, xmm9 ; xmm7 = zReal^2 - zImag^2
+    subsd xmm8, xmm9 ; xmm8 = zReal^2 - zImag^2
 
     ; xmm7 = 2 * zReal * zImag + cImag
     addsd xmm7, xmm7
@@ -83,8 +83,8 @@ pixelLoop:
     addsd xmm7, xmm2
 
     ; xmm6 = xmm7 + cReal
-    movsd xmm6, xmm8 ; xmm11 = zReal^2 - zImag^2
-    addsd xmm6, xmm1 ; xmm11 = zReal^2 - zImag^2 + cReal
+    movsd xmm6, xmm8 ; xmm6 = zReal^2 - zImag^2
+    addsd xmm6, xmm1 ; xmm6 = zReal^2 - zImag^2 + cReal
 
     ; decrement iter counter
     dec rcx
