@@ -47,10 +47,6 @@ innerLoop:
     ; set iter counter maxIteration = 128
     mov rcx, 128
 pixelLoop:
-    ; check if iter counter is zero
-    cmp rcx, 0
-    je endPixelLoop
-
     ; calc zReal^2
     movsd xmm8, xmm6 ; xmm8 = zReal
     mulsd xmm8, xmm8 ; xmm8 = zReal^2
@@ -88,7 +84,9 @@ pixelLoop:
 
     ; decrement iter counter
     dec rcx
-    jmp pixelLoop
+    ; check if iter counter is zero
+    cmp rcx, 0
+    jne pixelLoop
 endPixelLoop:
    	; rcx = uint8_t r = ((maxIteration - iteration) * 255) / maxIteration;
 	imul rcx, 255		; rcx = (maxIteration - iteration) * 255
